@@ -1,6 +1,9 @@
-# Using list to store books as dictionaries.  Menu prompts user
+# Python course proj.
+#  
+# (1) Menu prompts user for command.
+# (2) Appropriate functions are called
+
 import utils.database as database
-import sqlite3
 
 USER_CHOICE = '''
 Enter:
@@ -12,10 +15,6 @@ Enter:
 
 Your choice:
 '''
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# FUNCTIONS FOR MENU PROMPTS
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # add a book to the database
@@ -31,7 +30,7 @@ def list_books():
     for book in books:
         name = book['name'].capitalize()
         author = book['author'].capitalize()
-        read = 'YES' if book['read'] else 'NO'
+        read = 1 if book['read'] else 0
         print(f"- {name} by {author}. read: {read}.")
 
 
@@ -49,6 +48,7 @@ def delete_book():
 
 # MENU function to take user input and execute appropriate function
 def menu():
+    database.initialize_file()
     user_input = input(USER_CHOICE)
     while user_input != 'q':
         if user_input == 'a':
@@ -63,6 +63,4 @@ def menu():
             print("IDK what command that is! ")
         user_input = input(USER_CHOICE)
 
-if __name__ == "__main__":
-    database.initialize_file()
-    menu()
+menu()

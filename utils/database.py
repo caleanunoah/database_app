@@ -3,28 +3,31 @@ concerned with storing and retrieving things from a json file
 
 """
 import json
+import sqlite3
+from typing import Tuple
 
-# file with non-empty list of books saved as dictionaries
-#   book = {
-#           name: str
-#           author: str
-#           read:   bool
-#                       }
-database_file = 'utils\database.json'
+database_file = "lib_db.db"
 
 
 def initialize_file():
-    with open(database_file, "w") as fp:
-        json.dump([], fp)
+    connection = sqlite3.connect(database_file)
+    cursor = connection.cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS books(name text primary key, author text, read integer default 0)')
+    connection.commit()
+    connection.close()
+    return
 
 
 def add_book(name, author):
-    new_book = {'name': name, 'author': author, 'read': False}
-    with open(database_file, 'r') as fp:
-        books = json.load(fp)
-    books.append(new_book)
-    with open(database_file, 'w') as fp:
-        json.dump(books, fp)
+    connection = sqlite3.connect(database_file)
+    cursor = connection.cursor()
+    cursor.execute('INSERT INTO books VALUES(?, ?, 0)', (name, author))
+    #new_book = {'name': name, 'author': author, 'read': 0}
+    #with open(database_file, 'r') as fp:
+    #    books = json.load(fp)
+    #books.append(new_book)
+    #with open(database_file, 'w') as fp:
+    #    json.dump(books, fp)
 
 
 def get_all_books():
@@ -33,12 +36,12 @@ def get_all_books():
 
 
 def mark_as_read(name):
-    # the following is more readable than mine
+    # the following is more readable than mine/
     with open(database_file, 'r') as fp:
         books = json.load(fp)
     for entry in books:
         if entry['name'] == name:
-            entry['read'] = True
+            entry['read'] = 1
     with open(database_file, 'w') as fp:
         json.dump(books, fp)
 
