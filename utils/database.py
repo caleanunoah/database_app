@@ -4,22 +4,23 @@ concerned with storing and retrieving things from a json file
 """
 import json
 from utils.database_connection import DatabaseConnection
+from typing import List, Dict
 
 database_file = "lib_db.db"
 
-def initialize_file():
+def initialize_file() -> None:
     with DatabaseConnection(database_file) as connection:
         cursor = connection.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS books(name text primary key, author text, read integer default 0)')
 
 
-def add_book(name, author):
+def add_book(name, author) -> None:
     with DatabaseConnection(database_file) as connection:
         cursor = connection.cursor()
         cursor.execute('INSERT INTO books VALUES(?, ?, 0)', (name, author))
 
 
-def get_all_books():
+def get_all_books() -> List[Dict(str)]:
     with DatabaseConnection(database_file) as connection:
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM books')
@@ -27,13 +28,13 @@ def get_all_books():
     return books
 
 
-def mark_as_read(name):
+def mark_as_read(name) -> None:
     with DatabaseConnection(database_file) as connection:
         cursor = connection.cursor()
         cursor.execute('UPDATE books SET read=1 WHERE name=?', (name,))
 
 
-def delete_book(name):
+def delete_book(name) -> None:
     with DatabaseConnection(database_file) as connection:
         cursor = connection.cursor()
         cursor.execute('DELETE from books WHERE name=?', (name,))
