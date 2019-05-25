@@ -1,5 +1,5 @@
 # Python course proj.
-#  
+#
 # (1) Menu prompts user for command.
 # (2) Appropriate functions are called
 
@@ -28,8 +28,8 @@ def prompt_add_book():
 def list_books():
     books = database.get_all_books()
     for book in books:
-        name = book['name'].capitalize()
-        author = book['author'].capitalize()
+        name = book['name']
+        author = book['author']
         read = 1 if book['read'] else 0
         print(f"- {name} by {author}. read: {read}.")
 

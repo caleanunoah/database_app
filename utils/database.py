@@ -22,33 +22,30 @@ def add_book(name, author):
     connection = sqlite3.connect(database_file)
     cursor = connection.cursor()
     cursor.execute('INSERT INTO books VALUES(?, ?, 0)', (name, author))
-    #new_book = {'name': name, 'author': author, 'read': 0}
-    #with open(database_file, 'r') as fp:
-    #    books = json.load(fp)
-    #books.append(new_book)
-    #with open(database_file, 'w') as fp:
-    #    json.dump(books, fp)
+    connection.commit()
+    connection.close()
 
 
 def get_all_books():
-    with open(database_file, 'r') as fp:
-        return json.load(fp)
+    connection = sqlite3.connect(database_file)
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM books')
+    books = [{'name': row[0], 'author': row[1], 'read': row[2]} for row in cursor.fetchall()]
+    connection.close()
+    return books
 
 
 def mark_as_read(name):
-    # the following is more readable than mine/
-    with open(database_file, 'r') as fp:
-        books = json.load(fp)
-    for entry in books:
-        if entry['name'] == name:
-            entry['read'] = 1
-    with open(database_file, 'w') as fp:
-        json.dump(books, fp)
+    connection = sqlite3.connect(database_file)
+    cursor = connection.cursor()
+    cursor.execute('UPDATE books SET read=1 WHERE name=?', (name,))
+    connection.commit()
+    connection.close()
 
 
 def delete_book(name):
-    with open(database_file, 'r') as fp:
-        books = json.load(fp)
-    books = [entry for entry in books if entry['name'] != name]
-    with open(database_file, 'w') as fp:
-        json.dump(books, fp)
+    connection = sqlite3.connect(database_file)
+    cursor = connection.cursor()
+    cursor.execute('DELETE from books WHERE name=?', (name,))
+    connection.commit()
+    connection.close()
