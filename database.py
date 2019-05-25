@@ -1,8 +1,7 @@
 """
-concerned with storing and retrieving things from a json file
+concerned with storing and retrieving things from a database
 
 """
-import json
 from utils.database_connection import DatabaseConnection
 from typing import List, Dict, Union
 
