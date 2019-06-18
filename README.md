@@ -1,3 +1,2 @@
-# library_database
-A milestone proj for Python : 
-App used to store info about books.  Data stored in SQLite database.
+# database_app
+App used to store user's info about books in a SQLite database; user can add books, delete books, and mark a book as read.
